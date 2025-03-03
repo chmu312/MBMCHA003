@@ -42,7 +42,9 @@ public class GenericStatement{
     /**
      * This method serves the purpose of updating the statement object if the confidence score of the new presented fact 
      * is higher than already existing or store one
-     * @param otherStatement
+     * @param newFact This is the statement that is associated confidence score
+     * @param newCs This is the confidence score thats going to be used 
+     * for comparison with the objects confidence score
      */
  public void updateGenericStatement(String newFact, double newCS){
  if (newScore > this.confidenceScore){
