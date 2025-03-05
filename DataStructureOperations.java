@@ -6,8 +6,8 @@
  */
 
 public interface DataStructureOperations{
-    void kbExtractor(String filename){}
-    void searchByKey(String key){}
-    void searchByKeyFact(String key , String fact ){}
-    void updateOrAddStatement(string fact , double confidenceScore){}
+    void kbExtractor(String filename);
+    void searchByKey(String key);
+    void searchByKeyFact(String key , String fact );
+    void updateOrAddStatement(String fact , double confidenceScore);
 }
