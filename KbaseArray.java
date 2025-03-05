@@ -12,7 +12,7 @@ import java.io.IOException;
  *  Date 3/4/2025
  */
 
-public class KbaseArray implements DataStructureOperations{
+public class KbaseArray {
   private GenericStatement [] kBase;
     private int index ;
 /** 
@@ -25,7 +25,7 @@ public class KbaseArray implements DataStructureOperations{
         index = 0;
 
     }
-    @Override 
+     
      public void kbExtractor(String filename){
         try(BuffererReader freader = new BufferedReader(new FileReader(filename))){
          String statement;
@@ -33,12 +33,77 @@ public class KbaseArray implements DataStructureOperations{
             String[] subContents = statement.split("\t");
             String fact = subContents[1];
             String confidenceString;
-            kBase[i] = updateOrAddStatement(statement, index);
+            kBase[index] = updateOrAddStatement(statement, index);
+            index++;
          }
         }
-
+        catch(IOException e){
+            System.out.println("An error occured while reading the file");
+        }
      }
+     /**
+      * This method is responsible for searching the knowledge base for a statement with a specific key
+      * Parameters : key The key of the statement that is being searched for
+      * @param key The key of the statement that is being searched for
+      @return The statement that has the key that is being searched for
+      */
 
+        public void searchByKey(String key){
+            for(int i = 0; i < index; i++){
+                if(kBase[i].getKey().equals(key)){
+                    System.out.println(kBase[i].getFact());
+                    return;
+                }
+            }
+            System.out.println("The key was not found in the knowledge base");
+        }
+    /*
+    * This method is responsible for searching the knowledge base for a statement with a specific key and fact
+    * Parameters : key The key of the statement that is being searched for  
+    * fact The fact of the statement that is being searched for
+    * @param key The key of the statement that is being searched for
+    * @param fact The fact of the statement that is being searched for
+    * @return The statement that has the key and fact that is being searched for
+     */
+        public void searchByKeyFact(String key, String fact){
+            for(int i = 0; i < index; i++){
+                if(kBase[i].getKey().equals(key) && kBase[i].getFact().equals(fact)){
+                    System.out.println(kBase[i].getFact());
+                    return;
+                }
+            }
+            System.out.println("The key and fact were not found in the knowledge base");
+        }
 
+        /**
+         * This method is responsible for updating the knowledge base with a new statement or updating an existing statement
+         * Parameters : key The key of the statement that is being updated or added
+         * fact The fact of the statement that is being updated or added
+         * confidenceScore The confidence score of the statement that is being updated or added
+         * @param key The key of the statement that is being updated or added
+         * @param fact The fact of the statement that is being updated or added
+         * @param confidenceScore The confidence score of the statement that is being updated or added
+         */
+        public void updateOrAddStatement(String key, String fact, double confidenceScore){
+            for(int i = 0; i < index; i++){
+                if(kBase[i].getKey().equals(key)){
+                    kBase[i].updateGenericStatement(fact, confidenceScore);
+                    return;
+                }
+            }
+            kBase[index] = new GenericStatement(key, fact, confidenceScore);
+            
+        }
 
+    /**
+     * This method is responsible for outputting the knowledge base in a specific format
+     * Parameters : none
+     * @return The knowledge base in a specific format
+     */
+        public void outputKnowledgeBase(){
+            for(int i = 0; i < index; i++){
+                System.out.println(kBase[i].getKey() + "\t" + kBase[i].getFact() + "\t" + kBase[i].getConfidenceScore());
+            }
+        }
+     */
 }
