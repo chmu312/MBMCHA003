@@ -38,7 +38,7 @@ public class KbaseArray {
          }
         }
         catch(IOException e){
-            System.out.println("An error occured while reading the file");
+            System.out.println("The file you entered doesnt not exist");
         }
      }
      /**
@@ -105,5 +105,5 @@ public class KbaseArray {
                 System.out.println(kBase[i].getKey() + "\t" + kBase[i].getFact() + "\t" + kBase[i].getConfidenceScore());
             }
         }
-     */
+     
 }
