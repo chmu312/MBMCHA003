@@ -100,7 +100,7 @@ public class KbaseArray {
      * Parameters : none
      * @return The knowledge base in a specific format
      */
-        public void outputKnowledgeBase(){
+        public void printKnowledgeBase(){
             for(int i = 0; i < index; i++){
                 System.out.println(kBase[i].getKey() + "\t" + kBase[i].getFact() + "\t" + kBase[i].getConfidenceScore());
             }
