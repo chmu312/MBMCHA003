@@ -31,11 +31,15 @@ import java.io.File;
         private JBUtton printKbInOrderButton;
         private JButton printKbPreOrderButton;
         private JButton printKbPostOrderButton;
+        private JButton getHeightButton;
         private JTextField fileNameField;
         private JTextField keyField;
         private JTextField factField;
         private JTextField cScoreField; 
         private JButton openButton;
+        private JMenuItem exitItem;
+        private JMenu fileMenu;
+        private JMenuBar menuBar;
         private KbaseArray knowledgeBase;
       /**
        * Constructor for the GerericStatementArrayIterface
@@ -46,8 +50,9 @@ import java.io.File;
        * @param searchKeyButton
        * @param searchKeyAndFactButton
        * @param addStatementButton
-       * @param printKnowledgeBaseButton
-       * 
+       * @param printKBInOrderButton
+       * @param printKBPreOrderButton
+       * @param printKBPostOrderButton
        * @param fileNameField
        * @param keyField
        * @param factField
@@ -66,12 +71,20 @@ import java.io.File;
         printKbInOrderButton = new JButton("Print knowledge base in order");
         printKbPreOrderButton = new JButton("Print knowledge base pre order");
         printKbPostOrderButton = new JButton("Print knowledge base post order");
+        getHeightButton = new JButton("Get height of the tree");
         fileNameField = new JTextField();
         keyField = new JTextField();
         factField = new JTextField();
         cScoreField = new JTextField();
         openButton = new JButton("Open");
+        exitItem = new JMenuItem("Exit");
+        fileMenu = new JMenu("File");
+        menuBar = new JMenuBar();
+        menuBar.add(fileMenu);
+        fileMenu.add(exitItem);
+        frame.setJMenuBar(menuBar);
         knowledgeBase = new KbaseArray();
+
       }
         /**
          * Method to create the GUI interface
@@ -82,7 +95,9 @@ import java.io.File;
          * @param searchKeyButton   
          * @param searchKeyAndFactButton
          * @param addStatementButton
-         * @param printKnowledgeBaseButton
+         * @param printKBInOrderButton
+         * @param printKBPreOrderButton
+         * @param printKBPostOrderButton
          * @param fileNameField
          * @param keyField
          * @param factField
@@ -104,7 +119,10 @@ import java.io.File;
             panel.add(keyField);
             panel.add(factField);
             panel.add(addStatementButton);
-            panel.add(printKnowledgeBaseButton);
+            panel.add(printKbInOrderButton);
+            panel.add(printKbPreOrderButton);
+            panel.add(printKbPostOrderButton);
+            panel.add(getHeightButton);
             panel.add(cScoreField);
             frame.setVisible(true);
             openButton.addActionListener(new ActionListener(){
@@ -150,7 +168,17 @@ import java.io.File;
                     knowledgeBase.printPreOrder();
                 }
             });
-            frame.setVisible(true);
+            getHeightButton.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                    knowledgeBase.getHeight();
+                }
+            });
+            exitItem.addActListener(new ActionListner(){
+                public void actionPerformed(ActionEvent e){
+                    System.exit(0);
+                }
+            });
+            
         }
             /**
              * Main method to run the GUI
