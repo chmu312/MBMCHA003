@@ -21,20 +21,21 @@ public class KbaseArray {
  *
  */
     public KbaseArray(){
-        kBase = new GenericStatement[100000];
-        index = 0;
+        kBase = new GenericStatement[100000];//Our Knowledge Base has 100000 statements 
+        index = 0;//index is going to keep track of where we are in terms of pupulating the array
 
     }
      
      public void kbExtractor(String filename){
         try(BuffererReader freader = new BufferedReader(new FileReader(filename))){
-         String statement;
+         String statement;//container for line being read from the file
          while((statement = freader.readline()) != null){
-            String[] subContents = statement.split("\t");
+            String[] subContents = statement.split("\t");//splitting the line into its components
             String fact = subContents[1];
-            String confidenceString;
-            kBase[index] = updateOrAddStatement(statement, index);
-            index++;
+            double confidenceScore = Double.parseDouble(subContents[2]);//converting the confidence score to a double
+            String key = subContents[0];
+            kBase[index] = updateOrAddStatement(key, fact, confidenceScore);//for each entry we need to check if we are updating or adding a new statement to the knowledge base
+            index++;//incrementing the index to keep track of where we are in the array
          }
         }
         catch(IOException e){
@@ -51,7 +52,7 @@ public class KbaseArray {
         public void searchByKey(String key){
             for(int i = 0; i < index; i++){
                 if(kBase[i].getKey().equals(key)){
-                    System.out.println(kBase[i].getFact());
+                    System.out.println("Got it !! We have found the fact to do with your key: ",kBase[i].getFact(),"(Confidence score:",kBase[i].getConfidenceScore(),")");
                     return;
                 }
             }
@@ -68,7 +69,7 @@ public class KbaseArray {
         public void searchByKeyFact(String key, String fact){
             for(int i = 0; i < index; i++){
                 if(kBase[i].getKey().equals(key) && kBase[i].getFact().equals(fact)){
-                    System.out.println(kBase[i].getFact());
+                    System.out.println("Go it :) !! The statement has a confidence score of: ",kBase[i].getConfidenceScore());
                     return;
                 }
             }
@@ -87,11 +88,11 @@ public class KbaseArray {
         public void updateOrAddStatement(String key, String fact, double confidenceScore){
             for(int i = 0; i < index; i++){
                 if(kBase[i].getKey().equals(key)){
-                    kBase[i].updateGenericStatement(fact, confidenceScore);
+                    kBase[i].updateGenericStatement(fact, confidenceScore);//if the key is found we update the statement
                     return;
                 }
             }
-            kBase[index] = new GenericStatement(key, fact, confidenceScore);
+            kBase[index] = new GenericStatement(key, fact, confidenceScore);//if the key is not found we add a new statement`1
             
         }
 
@@ -100,9 +101,18 @@ public class KbaseArray {
      * Parameters : none
      * @return The knowledge base in a specific format
      */
-        public void printKnowledgeBase(){
-            for(int i = 0; i < index; i++){
-                System.out.println(kBase[i].getKey() + "\t" + kBase[i].getFact() + "\t" + kBase[i].getConfidenceScore());
+        public void guessCsKb(string key,double guessConfidenceScore){
+            for (int i = 0;i <index;i++){
+                if(kBase[i].getKey().equals(key)){
+                    if(kBase[i].getConfidenceScore() == guessConfidenceScore){
+                        System.out.println("You guess correctly the confidence for the key:",key,"is:",guessConfidenceScore);// if the confidence score is correct we output the message
+                        return;
+                    }
+                    else{
+                        System.out.println("Booooo!:( :(",guessConfidenceScore,"is incorrect");//if the confidence score is incorrect we output the message
+                        return;
+                    }
+                }
             }
         }
      

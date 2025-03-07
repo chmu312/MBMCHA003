@@ -28,7 +28,7 @@ import java.io.File;
         private JButton searchKeyButton;
         private JButton searchKeyAndFactButton;
         private JButton addStatementButton;
-        private JButton printKnowledgeBaseButton;
+        private JButton guesssCsKb;
         private JTextField fileNameField;
         private JTextField keyField;
         private JTextField factField;
@@ -44,7 +44,7 @@ import java.io.File;
        * @param searchKeyButton
        * @param searchKeyAndFactButton
        * @param addStatementButton
-       * @param printKnowledgeBaseButton
+       * @param guesssCsKb
        * @param fileNameField
        * @param keyField
        * @param factField
@@ -60,12 +60,13 @@ import java.io.File;
         searchKeyButton = new JButton("Search by key");
         searchKeyAndFactButton = new JButton("Search by key and fact");
         addStatementButton = new JButton("Add statement");
-        printKnowledgeBaseButton = new JButton("Print knowledge base");
+        guesssCsKb = new JButton("Print knowledge base");
         fileNameField = new JTextField();
         keyField = new JTextField();
         factField = new JTextField();
         cScoreField = new JTextField();
         openButton = new JButton("Open");
+        
         knowledgeBase = new KbaseArray();
       }
         /**
@@ -77,7 +78,7 @@ import java.io.File;
          * @param searchKeyButton   
          * @param searchKeyAndFactButton
          * @param addStatementButton
-         * @param printKnowledgeBaseButton
+         * @param guesssCsKb
          * @param fileNameField
          * @param keyField
          * @param factField
@@ -99,7 +100,7 @@ import java.io.File;
             panel.add(keyField);
             panel.add(factField);
             panel.add(addStatementButton);
-            panel.add(printKnowledgeBaseButton);
+            panel.add(guesssCsKb);
             panel.add(cScoreField);
             frame.setVisible(true);
             openButton.addActionListener(new ActionListener(){
@@ -130,9 +131,12 @@ import java.io.File;
                     knowledgeBase.addStatement(key, fact, cScore);
                 }
             });
-            printKnowledgeBaseButton.addActionListener(new ActionListener(){
+            guesssCsKb.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    knowledgeBase.printKnowledgeBase();
+                    String key = keyField.getText();
+                    Double cScore = Double.parseDouble(cScoreField.getText());
+                    knowledgeBase.guessCsKb(key, cScore);
+                    
                 }
             });
             frame.setVisible(true);
