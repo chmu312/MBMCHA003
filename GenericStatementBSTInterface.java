@@ -23,15 +23,11 @@ import java.io.File;
 
     public class GerericStatementArrayIterface{
      private JFrame frame;
-        private JPanel panel;
+        private JPanel panel,inputPanel,buttonPanel;
         private JLabel label;
         private JButton searchKeyButton;
         private JButton searchKeyAndFactButton;
         private JButton addStatementButton;
-        private JBUtton printKbInOrderButton;
-        private JButton printKbPreOrderButton;
-        private JButton printKbPostOrderButton;
-        private JButton getHeightButton;
         private JTextField fileNameField;
         private JTextField keyField;
         private JTextField factField;
@@ -40,51 +36,73 @@ import java.io.File;
         private JMenuItem exitItem;
         private JMenu fileMenu;
         private JMenuBar menuBar;
-        private KbaseArray knowledgeBase;
+        private KbaseBST knowledgeBase;
+        private JMenuItem toggleThemeItem;
+        private boolean isdarkMode;
       /**
        * Constructor for the GerericStatementArrayIterface
        * @param knowledgeBase
        * @param frame
        * @param panel
+       * @param inputPanel
+       * @param buttonPanel
        * @param label
        * @param searchKeyButton
        * @param searchKeyAndFactButton
        * @param addStatementButton
-       * @param printKBInOrderButton
-       * @param printKBPreOrderButton
-       * @param printKBPostOrderButton
+       * @param cScoreButton
        * @param fileNameField
        * @param keyField
        * @param factField
        * @param cScoreField
        * @param openButton
        * @param knowledgeBase
+       * @param exitItem
+       * @param fileMenu
+       * @param menuBar
        * 
        */
       public GerericStatementArrayIterface(){
-        frame = new JFrame();
-        panel = new JPanel();
-        label = new JLabel("Enter the file name");
-        searchKeyButton = new JButton("Search by key");
-        searchKeyAndFactButton = new JButton("Search by key and fact");
-        addStatementButton = new JButton("Add statement");
-        printKbInOrderButton = new JButton("Print knowledge base in order");
-        printKbPreOrderButton = new JButton("Print knowledge base pre order");
-        printKbPostOrderButton = new JButton("Print knowledge base post order");
-        getHeightButton = new JButton("Get height of the tree");
+        frame = new JFrame("genericsKBArrayApp");
+        panel = new JPanel(new BoarderLayout(5.5,5.5));
+        inputPanel = new JPanel(new GridLayout(4,2,5,5));   
+        buttonPanel = new JPanel(new GridLayout(2,3,5,5));
+        label = new JLabel("Enter the file name",SwingConstants.CENTER);
+        label.setFont(new Font("Arial", Font.BOLD, 24));
+        frame.add(label,BoarderLayout.NORTH);
+        openButton= new JButton("Open");
+        openButton.setFont(new Font("Arial", Font.BOLD, 24));
+        buttonPanel.add(openButton);
+        //These are the input filed for the user to enter the key, fact and confidence score
         fileNameField = new JTextField();
+        inputPanel.add(JLabel("File Name:"));
+        inputPanel.add(fileNameField);
         keyField = new JTextField();
+        inputPanel.add(JLabel("Key:"));
+        inputPanel.add(keyField);
         factField = new JTextField();
+        inputPanel.add(JLabel("Fact:"));
+        inputPanel.add(factField);
         cScoreField = new JTextField();
-        openButton = new JButton("Open");
+        inputPanel.add(JLabel("Confidence Score:"));
+        inputPanel.add(cScoreField);
+        //These are the buttons for the user to search by key, search by key and fact, add a statement and print the knowledge base
+        searchKeyButton = new JButton("Search by key");
+        buttonPanel.add(searchKeyButton);
+        searchKeyAndFactButton = new JButton("Search by key and fact");
+        buttonPanel.add(searchKeyAndFactButton);
+        addStatementButton = new JButton("Add statement");
+        buttonPanel.add(addStatementButton);
+    //Menu items for the user to exit the application and toggle the theme
         exitItem = new JMenuItem("Exit");
+        toggleThemeItem = new JMenuItem("Toggle Theme");
         fileMenu = new JMenu("File");
         menuBar = new JMenuBar();
         menuBar.add(fileMenu);
         fileMenu.add(exitItem);
+        fileMenu.add(toggleThemeItem);
         frame.setJMenuBar(menuBar);
-        knowledgeBase = new KbaseArray();
-
+        knowledgeBase = new KbaseBST();
       }
         /**
          * Method to create the GUI interface
@@ -102,15 +120,18 @@ import java.io.File;
          * @param keyField
          * @param factField
          * @param cScoreField
-         *  @param openButton
+         * @param openButton
          * @param knowledgeBase
+         * @param exitItem
+         * @param fileMenu
+         * @param menuBar
          * 
          */
         public void createGUI(){
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(500, 500);
+            frame.setSize(600, 500);
             frame.add(panel);
-            panel.setLayout(new GridLayout(6, 2));
+            panel.setLayout(new BoarderLayout(10, 10));// Boarder layout with 10 by 10 spacing
             panel.add(label);
             panel.add(fileNameField);
             panel.add(openButton);
@@ -119,17 +140,16 @@ import java.io.File;
             panel.add(keyField);
             panel.add(factField);
             panel.add(addStatementButton);
-            panel.add(printKbInOrderButton);
-            panel.add(printKbPreOrderButton);
-            panel.add(printKbPostOrderButton);
-            panel.add(getHeightButton);
             panel.add(cScoreField);
+            panel.add(exitItem);
+            panel.add(fileMenu);
+            panel.add(menuBar);
             frame.setVisible(true);
             openButton.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
                     String fileName = fileNameField.getText();
                     File file = new File(fileName);
-                    knowledgeBase.loadKnowledgeBase(file);
+                    knowledgeBase.kbExtractor(file);
                 }
             });
             searchKeyButton.addActionListener(new ActionListener(){
@@ -175,6 +195,7 @@ import java.io.File;
             });
             exitItem.addActListener(new ActionListner(){
                 public void actionPerformed(ActionEvent e){
+                    System.out.println("Goodbye Darling :<");
                     System.exit(0);
                 }
             });
