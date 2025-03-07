@@ -28,7 +28,9 @@ import java.io.File;
         private JButton searchKeyButton;
         private JButton searchKeyAndFactButton;
         private JButton addStatementButton;
-        private JButton printKnowledgeBaseButton;
+        private JBUtton printKbInOrderButton;
+        private JButton printKbPreOrderButton;
+        private JButton printKbPostOrderButton;
         private JTextField fileNameField;
         private JTextField keyField;
         private JTextField factField;
@@ -45,6 +47,7 @@ import java.io.File;
        * @param searchKeyAndFactButton
        * @param addStatementButton
        * @param printKnowledgeBaseButton
+       * 
        * @param fileNameField
        * @param keyField
        * @param factField
@@ -60,7 +63,9 @@ import java.io.File;
         searchKeyButton = new JButton("Search by key");
         searchKeyAndFactButton = new JButton("Search by key and fact");
         addStatementButton = new JButton("Add statement");
-        printKnowledgeBaseButton = new JButton("Print knowledge base");
+        printKbInOrderButton = new JButton("Print knowledge base in order");
+        printKbPreOrderButton = new JButton("Print knowledge base pre order");
+        printKbPostOrderButton = new JButton("Print knowledge base post order");
         fileNameField = new JTextField();
         keyField = new JTextField();
         factField = new JTextField();
@@ -130,9 +135,19 @@ import java.io.File;
                     knowledgeBase.addStatement(key, fact, cScore);
                 }
             });
-            printKnowledgeBaseButton.addActionListener(new ActionListener(){
+            printKbInOrderButton.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
-                    knowledgeBase.printKnowledgeBase();
+                    knowledgeBase.printInOrder();
+                }
+            });
+            printKbPostOrderButton.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                    knowledgeBase.printPostOrder();
+                }
+            });
+            printKbPreOrderButton.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                    knowledgeBase.printPreOrder();
                 }
             });
             frame.setVisible(true);
