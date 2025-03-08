@@ -95,7 +95,7 @@ import java.io.File;
         addStatementButton = new JButton("Add statement");
         buttonPanel.add(addStatementButton);
         guessCsKb = new JButton("Print knowledge base");
-        buttonPanel.add(guesssCsKb);
+        buttonPanel.add(guessCsKb);
         printKBButton = new JButton("Print knowledge base");
         buttonPanel.add(printKBButton);
      // These are the menu items that the user will use to interact with the application
