@@ -1,5 +1,5 @@
 /**
- * The GenericStatement classs represnts the linen statement from the textfile
+ * The GenericStatement class represents the line statement from the textfile
  * It has access methods and modifier methods 
  * The class will have method to update the fact of the key if the confidence score of the input is greater than the already existing fact 
  * with the same key
@@ -46,11 +46,11 @@ public class GenericStatement{
      * @param newCs This is the confidence score thats going to be used 
      * for comparison with the objects confidence score
      */
- public void updateGenericStatement(String newFact, double newCS){
- if (newScore > this.confidenceScore){
+    public void updateGenericStatement(String newFact, double newCS){
+    if (newCS > this.confidenceScore){//check if the new score is greater than the existing score
     this.fact= newFact;
-    this.confidenceScore = newCS;
- }
- }
+    this.confidenceScore = newCS;//overwrite the existing fact and confidence score
+     }
+    }
 
 }

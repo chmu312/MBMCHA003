@@ -81,7 +81,8 @@ public class KbaseBST {
                 current = current.right;
             }
             else{
-                System.out.println(current.statement.getFact());
+                System.out.println("Got it !! We have found the fact to do with your key: "+current.statement.getFact() 
+                +"(Confidence score:"+current.statement.getConfidenceScore()+")");
                 return;
             }
         }
@@ -104,16 +105,17 @@ public void searchByKeyFact(String key, String fact){
         }
         else{
             if (fact.equals(current.statement.getFact())){
-                System.out.println(current.statement.getFact());
+                System.out.println("Go it :) !! The statement has a confidence score of: "+
+                    current.statement.getConfidenceScore());
                 return;
             }
             else{
-                System.out.println("The statement was not found");
+                System.out.println("The statement was not found :<");
                 return;
             }
         }
     }
-    System.out.println("The statement was not found");
+    System.out.println("The statement was not found :<");
 }
 /**
  * This method is responsible for updating a statement in the binary search tree

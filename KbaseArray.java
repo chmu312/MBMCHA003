@@ -27,15 +27,15 @@ public class KbaseArray {
     }
      
      public void kbExtractor(String filename){
-        try(BuffererReader freader = new BufferedReader(new FileReader(filename))){
+        try(BufferedReader freader = new BufferedReader(new FileReader(filename))){
          String statement;//container for line being read from the file
-         while((statement = freader.readline()) != null){
+         while((statement = freader.readLine()) != null){
             String[] subContents = statement.split("\t");//splitting the line into its components
             String fact = subContents[1];
             double confidenceScore = Double.parseDouble(subContents[2]);//converting the confidence score to a double
             String key = subContents[0];
-            kBase[index] = updateOrAddStatement(key, fact, confidenceScore);//for each entry we need to check if we are updating or adding a new statement to the knowledge base
-            index++;//incrementing the index to keep track of where we are in the array
+            updateOrAddStatement(key, fact, confidenceScore);//for each entry we need to check if we are updating or adding a new statement to the knowledge base
+            
          }
         }
         catch(IOException e){
@@ -52,7 +52,8 @@ public class KbaseArray {
         public void searchByKey(String key){
             for(int i = 0; i < index; i++){
                 if(kBase[i].getKey().equals(key)){
-                    System.out.println("Got it !! We have found the fact to do with your key: ",kBase[i].getFact(),"(Confidence score:",kBase[i].getConfidenceScore(),")");
+                    System.out.println("Got it !! We have found the fact to do with your key: "+kBase[i].getFact() 
+                    +"(Confidence score:"+kBase[i].getConfidenceScore()+")");
                     return;
                 }
             }
@@ -66,14 +67,15 @@ public class KbaseArray {
     * @param fact The fact of the statement that is being searched for
     * @return The statement that has the key and fact that is being searched for
      */
-        public void searchByKeyFact(String key, String fact){
+        public void searchByKeyAndFact(String key, String fact){
             for(int i = 0; i < index; i++){
                 if(kBase[i].getKey().equals(key) && kBase[i].getFact().equals(fact)){
-                    System.out.println("Go it :) !! The statement has a confidence score of: ",kBase[i].getConfidenceScore());
+                    System.out.println("Go it :) !! The statement has a confidence score of: "+
+                    kBase[i].getConfidenceScore());
                     return;
                 }
             }
-            System.out.println("The key and fact were not found in the knowledge base");
+            System.out.println("The key and fact were not found in the knowledge base,or its you :<");
         }
 
         /**
@@ -93,27 +95,37 @@ public class KbaseArray {
                 }
             }
             kBase[index] = new GenericStatement(key, fact, confidenceScore);//if the key is not found we add a new statement`1
-            
+            index++;//incrementing the index to keep track of where we are in the array
         }
 
-    /**
-     * This method is responsible for outputting the knowledge base in a specific format
-     * Parameters : none
-     * @return The knowledge base in a specific format
-     */
-        public void guessCsKb(string key,double guessConfidenceScore){
+        public void guessCsKb(String key,double guessConfidenceScore){
             for (int i = 0;i <index;i++){
                 if(kBase[i].getKey().equals(key)){
                     if(kBase[i].getConfidenceScore() == guessConfidenceScore){
-                        System.out.println("You guess correctly the confidence for the key:",key,"is:",guessConfidenceScore);// if the confidence score is correct we output the message
+                        System.out.println("You guess correctly the confidence for the key:"+key
+                        +"is:"+guessConfidenceScore);// if the confidence score is correct we output the message
                         return;
                     }
                     else{
-                        System.out.println("Booooo!:( :(",guessConfidenceScore,"is incorrect");//if the confidence score is incorrect we output the message
+                        System.out.println("Booooo!:( :("+guessConfidenceScore+"is incorrect");//if the confidence score is incorrect we output the message
                         return;
                     }
                 }
             }
         }
+
+ /**
+ * This method is responsible for outputting the knowledge base \
+ * Parameters : none
+ @param none
+ @return The knowledge base in a specific format
+
+*/
+            public void outputKb(){
+                for(int i = 0; i < index; i++){
+                    System.out.println("Key: "+kBase[i].getKey()+" Fact: "+kBase[i].getFact()+" Confidence Score: "+kBase[i].getConfidenceScore());
+                }
+            }
+  */
      
 }

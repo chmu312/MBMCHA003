@@ -21,21 +21,21 @@ import java.io.File;
          * 
          */
 
-    public class GerericStatementArrayIterface{
+    public class GenericStatementArrayInterface{
      private JFrame frame;
         private JPanel panel , inputPanel , buttonPanel;
         private JLabel label;
         private JButton searchKeyButton;
         private JButton searchKeyAndFactButton;
         private JButton addStatementButton;
-        private JButton guesssCsKb;
+        private JButton guessCsKb , printKBButton;
         private JTextField fileNameField;
         private JTextField keyField;
         private JTextField factField;
         private JTextField cScoreField; 
         private JButton openButton;
         private JMenuItem exitItem;
-        private JMenuItem togglThemeItem;
+        private JMenuItem toggleThemeItem;
         private JMenu fileMenu;
         private JMenuBar menuBar;
         private KbaseArray knowledgeBase;
@@ -43,14 +43,14 @@ import java.io.File;
 
       /**
        * Constructor for the GerericStatementArrayIterface
-       * @param knowledgeBase
+       * 
        * @param frame
        * @param panel
        * @param label
        * @param searchKeyButton
        * @param searchKeyAndFactButton
        * @param addStatementButton
-       * @param guesssCsKb
+       * @param guessCsKb
        * @param fileNameField
        * @param keyField
        * @param factField
@@ -64,15 +64,14 @@ import java.io.File;
        * @param togglThemeItem
        * 
        */
-      public GerericStatementArrayIterface(){
-        frame = new JFrame();
-        we 
-        panel = new JPanel(new BorderLayout(5.5,5.5));
+      public GenericStatementArrayInterface(){
+        frame = new JFrame("GenericKBArrayApp");
+        panel = new JPanel(new BorderLayout(6,6));
         inputPanel = new JPanel(new GridLayout(4,2,5,5));
-        buttonPanel = new JPanel(new GridLayout(2,3,5,5));
+        buttonPanel = new JPanel(new GridLayout(2,2,5,5));
         label = new JLabel("Enter the file name",SwingConstants.CENTER);
         label.setFont(new Font("Serif", Font.BOLD, 20));
-        frame.add(label, BorderLayout.NORTH);
+
         openButton = new JButton("Open");
         buttonPanel.add(openButton);
      // These are the input fields for the user to input the file name, key, fact and confidence score   
@@ -95,23 +94,25 @@ import java.io.File;
         buttonPanel.add(searchKeyAndFactButton);
         addStatementButton = new JButton("Add statement");
         buttonPanel.add(addStatementButton);
-        guesssCsKb = new JButton("Print knowledge base");
+        guessCsKb = new JButton("Print knowledge base");
         buttonPanel.add(guesssCsKb);
+        printKBButton = new JButton("Print knowledge base");
+        buttonPanel.add(printKBButton);
      // These are the menu items that the user will use to interact with the application
         exitItem = new JMenuItem("Exit");
         fileMenu = new JMenu("File");
         menuBar = new JMenuBar();
-        togglThemeItem = new JMenuItem("Toggle Dark Mode");
+        toggleThemeItem = new JMenuItem("Toggle Dark Mode");
         isdarkMode = false;
         fileMenu.add(exitItem);
-        fileMenu.add(togglThemeItem);
+        fileMenu.add(toggleThemeItem);
         menuBar.add(fileMenu);
         frame.setJMenuBar(menuBar);
         knowledgeBase = new KbaseArray();
       }
         /**
          * Method to create the GUI interface
-         * 
+         * @param knowledgeBase
          * @param frame
          * @param panel
          * @param label
@@ -136,27 +137,23 @@ import java.io.File;
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setSize(500, 500);
             frame.add(panel);
-            panel.setLayout(new GridLayout(6, 2 , 5,5));
-            panel.add(label);
-            panel.add(fileNameField);
-            panel.add(openButton);
-            panel.add(searchKeyButton);
-            panel.add(searchKeyAndFactButton);
-            panel.add(keyField);
-            panel.add(factField);
-            panel.add(addStatementButton);
-            panel.add(guesssCsKb);
-            panel.add(cScoreField);
-            panel.add(exitItem);
-            panel.add(fileMenu);
-            panel.add(menuBar);
+            panel.add(label, BorderLayout.NORTH);
+            panel.add(inputPanel, BorderLayout.CENTER);
+            panel.add(buttonPanel, BorderLayout.SOUTH);
+            frame.pack(); // so that the frame is the right size and there are no conflicts
             frame.setVisible(true);
+           //adding actions to the buttons
+           //Collecting the file name from the user
+           //Collecting the key from the user
+          //Collecting the fact from the user
+          //Collecting the confidence score from the user
+
+           
             openButton.addActionListener(new ActionListener(){//This is the open button
                 public void actionPerformed(ActionEvent e){
                     System.out.println("Welcome Welcome Welcome!!!!!!");
                     String fileName = fileNameField.getText();
-                    File file = new File(fileName);
-                    knowledgeBase.loadKnowledgeBase(file);
+                    knowledgeBase.kbExtractor(fileName);
                 }
             });
             searchKeyButton.addActionListener(new ActionListener(){//This is the search key button
@@ -177,10 +174,11 @@ import java.io.File;
                     String key = keyField.getText();
                     String fact = factField.getText();
                     double cScore = Double.parseDouble(cScoreField.getText());
-                    knowledgeBase.addStatement(key, fact, cScore);
+                    knowledgeBase.updateOrAddStatement(key, fact, cScore);
                 }
             });
-            guesssCsKb.addActionListener(new ActionListener(){//This is the print knowledge base button
+
+            guessCsKb.addActionListener(new ActionListener(){//This is the print knowledge base button
                 public void actionPerformed(ActionEvent e){
                     String key = keyField.getText();
                     Double cScore = Double.parseDouble(cScoreField.getText());
@@ -188,16 +186,15 @@ import java.io.File;
                     
                 }
             });
-            togglThemeItem.addActionListener(new ActionListener(){//This is the dark mode theme
+            printKBButton.addActionListener(new ActionListener(){//This is the print knowledge base button
                 public void actionPerformed(ActionEvent e){
-                    if(isdarkMode){
-                        panel.setBackground(Color.GRAY);
-                        isdarkMode = false;
-                    }else{
-                        panel.setBackground(Color.BLACK);
-                        isdarkMode = true;
-                    }
+                    knowledgeBase.outputKb();
                 }
+            });
+            toggleThemeItem.addActionListener(new ActionListener(){//This is the dark mode theme
+                public void actionPerformed(ActionEvent e){
+                    toggleTheme();
+                }  
             });
             exitItem.addActionListener(new ActionListener(){//This is the exit button
                 public void actionPerformed(ActionEvent e){
@@ -207,7 +204,84 @@ import java.io.File;
                 }
             });
 
+
             
+        }
+        /** Method to toggle the theme of the GUI
+         * @param isdarkMode
+         * 
+         */
+        
+        public void toggleTheme(){
+
+            if(isdarkMode){
+                // Switch the app to light mode
+                panel.setBackground(Color.LIGHT_GRAY);
+                inputPanel.setBackground(Color.LIGHT_GRAY);
+                buttonPanel.setBackground(Color.LIGHT_GRAY);
+                label.setForeground(Color.BLACK);//Sets all filed to black
+                setComponentColors(Color.BLACK,Color.WHITE);
+                isdarkMode = false;
+            }
+            else{//Switch the app to dark mode
+                panel.setBackground(Color.DARK_GRAY);
+                inputPanel.setBackground(Color.DARK_GRAY);
+                buttonPanel.setBackground(Color.DARK_GRAY);
+                label.setForeground(Color.WHITE);//Sets text fileds and buttons to white
+                setComponentColors(Color.WHITE,Color.BLACK);
+                isdarkMode = true;
+            }
+            frame.repaint();//to update the frame
+        }
+        /**
+         * Method to set the colors of the components
+         * @param textColor the text color of the components
+         * @param backgroundColor the background color of the components
+         */
+
+        public void setComponentColors(Color textColor, Color backgroundColor){
+                                                    
+            label.setForeground(textColor);
+    
+            fileNameField.setForeground(textColor);
+            fileNameField.setBackground(backgroundColor);
+            
+            keyField.setForeground(textColor);
+            keyField.setBackground(backgroundColor);
+            
+            factField.setForeground(textColor);
+            factField.setBackground(backgroundColor);
+            
+            cScoreField.setForeground(textColor);
+            cScoreField.setBackground(backgroundColor);
+        
+            searchKeyButton.setForeground(textColor);
+            searchKeyButton.setBackground(backgroundColor);
+            
+            searchKeyAndFactButton.setForeground(textColor);
+            searchKeyAndFactButton.setBackground(backgroundColor);
+            
+            addStatementButton.setForeground(textColor);
+            addStatementButton.setBackground(backgroundColor);
+            
+            printKBButton.setForeground(textColor);
+            printKBButton.setBackground(backgroundColor);
+            
+            openButton.setForeground(textColor);
+            openButton.setBackground(backgroundColor);
+        
+            menuBar.setBackground(backgroundColor);
+            
+        
+            fileMenu.setForeground(textColor);
+            fileMenu.setBackground(backgroundColor);
+        
+            toggleThemeItem.setForeground(textColor);
+            toggleThemeItem.setBackground(backgroundColor);
+            
+            exitItem.setForeground(textColor);
+            exitItem.setBackground(backgroundColor);
+    
         }
             /**
              * Main method to run the GUI
@@ -215,8 +289,8 @@ import java.io.File;
              * 
              */
             public static void main(String[] args){
-                GerericStatementArrayIterface gsa = new GerericStatementArrayIterface();
-                gsa.createGUI();
+                GenericStatementArrayInterface gsApp = new GenericStatementArrayInterface();
+                gsApp.createGUI();
         }
 
 
