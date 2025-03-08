@@ -119,13 +119,12 @@ public class KbaseArray {
  * Parameters : none
  @param none
  @return The knowledge base in a specific format
-
 */
             public void outputKb(){
                 for(int i = 0; i < index; i++){
                     System.out.println("Key: "+kBase[i].getKey()+" Fact: "+kBase[i].getFact()+" Confidence Score: "+kBase[i].getConfidenceScore());
                 }
             }
-  */
+  
      
 }
