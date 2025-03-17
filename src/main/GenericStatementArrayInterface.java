@@ -94,7 +94,8 @@ import java.io.File;
         buttonPanel.add(searchKeyAndFactButton);
         addStatementButton = new JButton("Add statement");
         buttonPanel.add(addStatementButton);
-        
+        printKBButton = new JButton("Print knowledge base");
+        buttonPanel.add(printKBButton);
      // These are the menu items that the user will use to interact with the application
         exitItem = new JMenuItem("Exit");
         fileMenu = new JMenu("File");
@@ -148,12 +149,7 @@ import java.io.File;
             loadTextFileButton.addActionListener(new ActionListener(){//This is the open button
                 public void actionPerformed(ActionEvent e){
                     String fileName = fileNameField.getText();
-                    try {
-                        knowledgeBase.kbExtractor(fileName);
-                        JOptionPane.showMessageDialog(frame, "File loaded successfully!");
-                    } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(frame, "Error loading file: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                    }
+                    knowledgeBase.kbExtractor(fileName);
                 }
             });
             searchKeyButton.addActionListener(new ActionListener(){//This is the search key button
@@ -178,7 +174,11 @@ import java.io.File;
                 }
             });
 
-            
+            printKBButton.addActionListener(new ActionListener(){//This is the print knowledge base button
+                public void actionPerformed(ActionEvent e){
+                    knowledgeBase.outputKb();
+                }
+            });
             toggleThemeItem.addActionListener(new ActionListener(){//This is the dark mode theme
                 public void actionPerformed(ActionEvent e){
                     toggleTheme();
@@ -252,6 +252,8 @@ import java.io.File;
             addStatementButton.setForeground(textColor);
             addStatementButton.setBackground(backgroundColor);
             
+            printKBButton.setForeground(textColor);
+            printKBButton.setBackground(backgroundColor);
             
             loadTextFileButton.setForeground(textColor);
             loadTextFileButton.setBackground(backgroundColor);
@@ -286,6 +288,7 @@ import java.io.File;
         
     }
 
+     
 
-
-
+        
+    

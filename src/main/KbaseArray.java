@@ -49,7 +49,7 @@ public class KbaseArray {
         public void searchByKey(String key){
             for(int i = 0; i < index; i++){
                 if(kBase[i].getKey().equals(key)){
-                    System.out.println("Got it !! We have found the fact to do with your key:"+"\t"+kBase[i].getFact() 
+                    System.out.println("Got it !! We have found the fact to do with your key: "+kBase[i].getFact() 
                     +"(Confidence score:"+kBase[i].getConfidenceScore()+")");
                     return;
                 }

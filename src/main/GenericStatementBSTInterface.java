@@ -9,7 +9,7 @@ import java.io.File;
          * Date 3/6/2025
          * @version 1.0
          * We are going to attamept to do a GUI for the generic statement array interface
-         * This is the application that will demonstrate the use of the generic statement array interface
+         * This is the application that will demonstrate the use of the generic statement binary search tree interface
          * Its main purpose is to demonstrate the use of the generic statement array interface
          * Features to be included are:
          * 1 . Input a knowledge base of statements into a generic statement array
@@ -21,178 +21,168 @@ import java.io.File;
          * 
          */
 
-    public class GenericStatementArrayInterface{
+    public class GenericStatementBSTInterface{
      private JFrame frame;
-        private JPanel panel , inputPanel , buttonPanel;
+        private JPanel panel,inputPanel,buttonPanel;
         private JLabel label;
         private JButton searchKeyButton;
         private JButton searchKeyAndFactButton;
-        private JButton addStatementButton;
-        private JButton printKBButton;
+        private JButton addStatementButton,printInOrderButton;
         private JTextField fileNameField;
         private JTextField keyField;
         private JTextField factField;
         private JTextField cScoreField; 
-        private JButton loadTextFileButton;
+        private JButton openButton;
         private JMenuItem exitItem;
-        private JMenuItem toggleThemeItem;
         private JMenu fileMenu;
         private JMenuBar menuBar;
-        private KbaseArray knowledgeBase;
+        private KbaseBST knowledgeBase;
+        private JMenuItem toggleThemeItem;
         private boolean isdarkMode;
-
       /**
-       * Constructor for the GerericStatementArrayIterface
-       * 
+       * Constructor for thenGerericStatementBSTIterface
+       * @param knowledgeBase
        * @param frame
        * @param panel
+       * @param inputPanel
+       * @param buttonPanel
        * @param label
        * @param searchKeyButton
        * @param searchKeyAndFactButton
        * @param addStatementButton
-       * @param guessCsKb
        * @param fileNameField
        * @param keyField
        * @param factField
        * @param cScoreField
-       * @param loadTextFileButton
+       * @param openButton
        * @param knowledgeBase
        * @param exitItem
        * @param fileMenu
        * @param menuBar
-       * @param isdarkMode
-       * @param togglThemeItem
        * 
        */
-      public GenericStatementArrayInterface(){
-        frame = new JFrame("GenericKBArrayApp");
-        panel = new JPanel(new BorderLayout(6,6));
-        inputPanel = new JPanel(new GridLayout(4,2,5,5));
-        buttonPanel = new JPanel(new GridLayout(2,2,5,5));
+      public GenericStatementBSTInterface(){
+        frame = new JFrame("genericsKB-BST-App");
+        panel = new JPanel(new BorderLayout(5,5));
+        panel.setLayout(new BorderLayout(10,10));
+        inputPanel = new JPanel(new GridLayout(4,2,5,5));   
+        buttonPanel = new JPanel(new GridLayout(2,3,5,5));
         label = new JLabel("Enter the file name",SwingConstants.CENTER);
-        label.setFont(new Font("Serif", Font.BOLD, 20));
-
-        loadTextFileButton = new JButton("Load text file");
-        buttonPanel.add(loadTextFileButton);
-     // These are the input fields for the user to input the file name, key, fact and confidence score   
-        inputPanel.add(new JLabel("File Name:"));
+        label.setFont(new Font("Arial", Font.BOLD, 24));
+      
+        openButton= new JButton("Open");
+        openButton.setFont(new Font("Arial", Font.BOLD, 24));
+        buttonPanel.add(openButton);
+        //These are the input filed for the user to enter the key, fact and confidence score
         fileNameField = new JTextField();
+        inputPanel.add(new JLabel("File Name:"));
         inputPanel.add(fileNameField);
-        inputPanel.add(new JLabel("Key:"));
         keyField = new JTextField();
+        inputPanel.add(new JLabel("Key:"));
         inputPanel.add(keyField);
-        inputPanel.add(new JLabel("Fact:"));
         factField = new JTextField();
+        inputPanel.add(new JLabel("Fact:"));
         inputPanel.add(factField);
-        inputPanel.add(new JLabel("Confidence Score:"));
         cScoreField = new JTextField();
+        inputPanel.add(new JLabel("Confidence Score:"));
         inputPanel.add(cScoreField);
-     // These are the buttons that the user will use to interact with the knowledge base
+        //These are the buttons for the user to search by key, search by key and fact, add a statement and print the knowledge base
         searchKeyButton = new JButton("Search by key");
         buttonPanel.add(searchKeyButton);
         searchKeyAndFactButton = new JButton("Search by key and fact");
         buttonPanel.add(searchKeyAndFactButton);
         addStatementButton = new JButton("Add statement");
         buttonPanel.add(addStatementButton);
-        
-     // These are the menu items that the user will use to interact with the application
+        printInOrderButton = new JButton("Print in order");
+        buttonPanel.add(printInOrderButton);
+    //Menu items for the user to exit the application and toggle the theme
         exitItem = new JMenuItem("Exit");
+        toggleThemeItem = new JMenuItem("Toggle Theme");
         fileMenu = new JMenu("File");
         menuBar = new JMenuBar();
-        toggleThemeItem = new JMenuItem("Toggle Dark Mode");
-        isdarkMode = false;
+        menuBar.add(fileMenu);
         fileMenu.add(exitItem);
         fileMenu.add(toggleThemeItem);
-        menuBar.add(fileMenu);
         frame.setJMenuBar(menuBar);
-        knowledgeBase = new KbaseArray();
+        knowledgeBase = new KbaseBST();
       }
         /**
          * Method to create the GUI interface
-         * @param knowledgeBase
+         * 
          * @param frame
          * @param panel
          * @param label
          * @param searchKeyButton   
          * @param searchKeyAndFactButton
          * @param addStatementButton
+         * @param printInOrderButton
          * @param fileNameField
          * @param keyField
          * @param factField
          * @param cScoreField
-         * @param loadTextFileButton
+         * @param openButton
          * @param knowledgeBase
          * @param exitItem
-         * @param fileMenu  
+         * @param fileMenu
          * @param menuBar
-         * @param isdarkMode
-         * 
          * 
          */
         public void createGUI(){
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(500, 500);
+            frame.setSize(600, 500);
             frame.add(panel);
-            panel.add(label, BorderLayout.NORTH);
+            panel.setLayout(new BorderLayout(10, 10));// Boarder layout with 10 by 10 spacing
+            frame.add(label,BorderLayout.NORTH);
             panel.add(inputPanel, BorderLayout.CENTER);
-            panel.add(buttonPanel, BorderLayout.SOUTH);
-            frame.pack(); // so that the frame is the right size and there are no conflicts
+            panel.add(buttonPanel, BorderLayout.SOUTH);    
+            frame.pack();
             frame.setVisible(true);
-           //adding actions to the buttons
-           //Collecting the file name from the user
-           //Collecting the key from the user
-          //Collecting the fact from the user
-          //Collecting the confidence score from the user
-
-           
-            loadTextFileButton.addActionListener(new ActionListener(){//This is the open button
+            openButton.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
                     String fileName = fileNameField.getText();
-                    try {
-                        knowledgeBase.kbExtractor(fileName);
-                        JOptionPane.showMessageDialog(frame, "File loaded successfully!");
-                    } catch (Exception ex) {
-                        JOptionPane.showMessageDialog(frame, "Error loading file: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                    }
+                    File file = new File(fileName);
+                    knowledgeBase.kbExtractor(file);
                 }
             });
-            searchKeyButton.addActionListener(new ActionListener(){//This is the search key button
+            searchKeyButton.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
                     String key = keyField.getText();
                     knowledgeBase.searchByKey(key);
                 }
             });
-            searchKeyAndFactButton.addActionListener(new ActionListener(){//This is the search key and fact button
+            searchKeyAndFactButton.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
                     String key = keyField.getText();
                     String fact = factField.getText();
                     knowledgeBase.searchByKeyAndFact(key, fact);
                 }
             });
-            addStatementButton.addActionListener(new ActionListener(){//This is the add statement button
+            addStatementButton.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
                     String key = keyField.getText();
                     String fact = factField.getText();
                     double cScore = Double.parseDouble(cScoreField.getText());
-                    knowledgeBase.updateOrAddStatement(key, fact, cScore);
+                    knowledgeBase.addorUpdateStatement(key, fact, cScore);
                 }
             });
-
             
+            
+            printInOrderButton.addActionListener(new ActionListener(){
+                public void actionPerformed(ActionEvent e){
+                    knowledgeBase.printInOrder();
+                }
+            });
             toggleThemeItem.addActionListener(new ActionListener(){//This is the dark mode theme
                 public void actionPerformed(ActionEvent e){
                     toggleTheme();
                 }  
             });
-            exitItem.addActionListener(new ActionListener(){//This is the exit button
+            exitItem.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
                     System.out.println("Goodbye Darling :<");
                     System.exit(0);
-
                 }
             });
-
-
             
         }
         /** Method to toggle the theme of the GUI
@@ -200,7 +190,7 @@ import java.io.File;
          * 
          */
         
-        public void toggleTheme(){
+         public void toggleTheme(){
 
             if(isdarkMode){
                 // Switch the app to light mode
@@ -252,13 +242,14 @@ import java.io.File;
             addStatementButton.setForeground(textColor);
             addStatementButton.setBackground(backgroundColor);
             
+            printInOrderButton.setForeground(textColor);
+            printInOrderButton.setBackground(backgroundColor);
             
-            loadTextFileButton.setForeground(textColor);
-            loadTextFileButton.setBackground(backgroundColor);
+            openButton.setForeground(textColor);
+            openButton.setBackground(backgroundColor);
         
             menuBar.setBackground(backgroundColor);
             
-        
             fileMenu.setForeground(textColor);
             fileMenu.setBackground(backgroundColor);
         
@@ -267,25 +258,14 @@ import java.io.File;
             
             exitItem.setForeground(textColor);
             exitItem.setBackground(backgroundColor);
-    
-        }
+        } 
             /**
              * Main method to run the GUI
              * @param args
              * 
              */
             public static void main(String[] args){
-                GenericStatementArrayInterface gsApp = new GenericStatementArrayInterface();
-                gsApp.createGUI();
-        }
-
-
-
-     
-
-        
+                GenericStatementBSTInterface gBSTAPP = new GenericStatementBSTInterface();
+                gBSTAPP.createGUI();
+        }   
     }
-
-
-
-

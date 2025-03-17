@@ -27,12 +27,12 @@ import java.io.File;
         private JLabel label;
         private JButton searchKeyButton;
         private JButton searchKeyAndFactButton;
-        private JButton addStatementButton,printInOrderButton;
+        private JButton addStatementButton;
         private JTextField fileNameField;
         private JTextField keyField;
         private JTextField factField;
         private JTextField cScoreField; 
-        private JButton openButton;
+        private JButton loadButton;
         private JMenuItem exitItem;
         private JMenu fileMenu;
         private JMenuBar menuBar;
@@ -54,7 +54,7 @@ import java.io.File;
        * @param keyField
        * @param factField
        * @param cScoreField
-       * @param openButton
+       * @param loadButton
        * @param knowledgeBase
        * @param exitItem
        * @param fileMenu
@@ -70,9 +70,8 @@ import java.io.File;
         label = new JLabel("Enter the file name",SwingConstants.CENTER);
         label.setFont(new Font("Arial", Font.BOLD, 24));
       
-        openButton= new JButton("Open");
-        openButton.setFont(new Font("Arial", Font.BOLD, 24));
-        buttonPanel.add(openButton);
+        loadButton= new JButton("Load text file");
+        buttonPanel.add(loadButton);
         //These are the input filed for the user to enter the key, fact and confidence score
         fileNameField = new JTextField();
         inputPanel.add(new JLabel("File Name:"));
@@ -93,8 +92,6 @@ import java.io.File;
         buttonPanel.add(searchKeyAndFactButton);
         addStatementButton = new JButton("Add statement");
         buttonPanel.add(addStatementButton);
-        printInOrderButton = new JButton("Print in order");
-        buttonPanel.add(printInOrderButton);
     //Menu items for the user to exit the application and toggle the theme
         exitItem = new JMenuItem("Exit");
         toggleThemeItem = new JMenuItem("Toggle Theme");
@@ -105,6 +102,7 @@ import java.io.File;
         fileMenu.add(toggleThemeItem);
         frame.setJMenuBar(menuBar);
         knowledgeBase = new KbaseBST();
+        isdarkMode = false;
       }
         /**
          * Method to create the GUI interface
@@ -115,12 +113,11 @@ import java.io.File;
          * @param searchKeyButton   
          * @param searchKeyAndFactButton
          * @param addStatementButton
-         * @param printInOrderButton
          * @param fileNameField
          * @param keyField
          * @param factField
          * @param cScoreField
-         * @param openButton
+         * @param loadButton
          * @param knowledgeBase
          * @param exitItem
          * @param fileMenu
@@ -137,11 +134,10 @@ import java.io.File;
             panel.add(buttonPanel, BorderLayout.SOUTH);    
             frame.pack();
             frame.setVisible(true);
-            openButton.addActionListener(new ActionListener(){
+            loadButton.addActionListener(new ActionListener(){
                 public void actionPerformed(ActionEvent e){
                     String fileName = fileNameField.getText();
-                    File file = new File(fileName);
-                    knowledgeBase.kbExtractor(file);
+                    knowledgeBase.kbExtractor(fileName);
                 }
             });
             searchKeyButton.addActionListener(new ActionListener(){
@@ -154,7 +150,7 @@ import java.io.File;
                 public void actionPerformed(ActionEvent e){
                     String key = keyField.getText();
                     String fact = factField.getText();
-                    knowledgeBase.searchByKeyAndFact(key, fact);
+                    knowledgeBase.searchByKeyFact(key, fact);
                 }
             });
             addStatementButton.addActionListener(new ActionListener(){
@@ -162,16 +158,12 @@ import java.io.File;
                     String key = keyField.getText();
                     String fact = factField.getText();
                     double cScore = Double.parseDouble(cScoreField.getText());
-                    knowledgeBase.addorUpdateStatement(key, fact, cScore);
+                    knowledgeBase.updateOrAddStatement(key, fact, cScore);
                 }
             });
             
             
-            printInOrderButton.addActionListener(new ActionListener(){
-                public void actionPerformed(ActionEvent e){
-                    knowledgeBase.printInOrder();
-                }
-            });
+           
             toggleThemeItem.addActionListener(new ActionListener(){//This is the dark mode theme
                 public void actionPerformed(ActionEvent e){
                     toggleTheme();
@@ -186,7 +178,6 @@ import java.io.File;
             
         }
         /** Method to toggle the theme of the GUI
-         * @param isdarkMode
          * 
          */
         
@@ -242,11 +233,8 @@ import java.io.File;
             addStatementButton.setForeground(textColor);
             addStatementButton.setBackground(backgroundColor);
             
-            printInOrderButton.setForeground(textColor);
-            printInOrderButton.setBackground(backgroundColor);
-            
-            openButton.setForeground(textColor);
-            openButton.setBackground(backgroundColor);
+            loadButton.setForeground(textColor);
+            loadButton.setBackground(backgroundColor);
         
             menuBar.setBackground(backgroundColor);
             
